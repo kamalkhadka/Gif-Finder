@@ -10,12 +10,20 @@ form.addEventListener("submit", function (evt) {
 });
 
 async function searchGif(query) {
-  const res = await axios.get("http://api.giphy.com/v1/gifs/search", {
-    params: { q: query, api_key: "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym", limit: 1 },
-  });
-  const [gifInfo] = res.data.data;
-  console.log(gifInfo);
-  appendGif(gifInfo.images.original.url);
+  try {
+    const res = await axios.get("http://api.giphy.com/v1/gifs/search", {
+      params: {
+        q: query,
+        api_key: "MhAodEJIJxQMxW9XqxKjyXfNYdLoOIym",
+        limit: 1,
+      },
+    });
+    const [gifInfo] = res.data.data;
+    console.log(gifInfo);
+    appendGif(gifInfo.images.original.url);
+  } catch (err) {
+    alert(`Can't find gif for ${query}`);
+  }
 }
 
 function appendGif(gif) {
@@ -25,7 +33,6 @@ function appendGif(gif) {
   row.append(col);
   showRemoveButton();
 }
-
 
 function createColumnAndAppendGif(img) {
   const col = document.createElement("div");
@@ -39,14 +46,14 @@ function createGif(gif) {
   img.src = gif;
 
   $(img).addClass("img-fluid rounded shadow-lg border border-white");
- 
+
   return img;
 }
 
-function showRemoveButton(){
-    const removeBtn = $("#removeBtn").removeClass("d-none");
-    $(removeBtn).on('click', function(){
-        document.querySelector("#gifRow").innerText = '';  
-        $("#removeBtn").addClass("d-none")  
-    });
+function showRemoveButton() {
+  const removeBtn = $("#removeBtn").removeClass("d-none");
+  $(removeBtn).on("click", function () {
+    $("#gifRow").empty();
+    $("#removeBtn").addClass("d-none");
+  });
 }
