@@ -30,14 +30,13 @@ function appendGif(gif) {
   const row = document.querySelector("#gifRow");
   const img = createGif(gif);
   const col = createColumnAndAppendGif(img);
-  row.append(col);
+  $(row).prepend(col);
   showRemoveButton();
 }
 
 function createColumnAndAppendGif(img) {
   const col = document.createElement("div");
-  $(col).addClass("col col-md-4 mb-5");
-  col.append(img);
+  $(col).addClass("col-md-4 mb-5").append(img);
   return col;
 }
 
